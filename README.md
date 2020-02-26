@@ -1,4 +1,4 @@
-# DynamicalSys Research 
+# DynamicalSystem of curvature and torsion of stereographically projected smooth planar curves. 
 
 In Progress: Dynamical System created from mapping of curvature and torsion of image of parametric planar curve when 
 stereographically projected to the unit sphere. 
