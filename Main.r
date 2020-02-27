@@ -73,7 +73,8 @@ curvatureI <- function(alphaNPrimeVec, t){
   osculatingCircle = osculatingAlpha(alphaPrimeVec,kAlpha,t)
   gammaAlpha=gammaAlpha(osX)
   gammaAlphaDP=highOrderDeriv(gammaAlpha,'u',2)
-  curvatureIAlpha(norm(c(gammaAlphaDP[1](2*pi),gammaAlphaDP[2](2*pi),gammaAlphaDP[3](2*pi))))
+  curvatureIAlpha=norm(c(gammaAlphaDP[1](2*pi),gammaAlphaDP[2](2*pi),gammaAlphaDP[3](2*pi)))
+  return(curvatureIalp)
 }
 
 #Calculate derivative of arbitrary order
