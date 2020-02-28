@@ -7,6 +7,23 @@
 ##gammaMap(alpha(t))=osculating circle of alphaI(t)
 
 ##dataSet=matrix(alphaN(t)=(x(t),y(t),z=-1), nrow=N, ncol=3)
+
+#dataSet= matrix(c(expression(.2*cos(t)),expression(.5*sin(t)),expression(-1)), ncol=3)
+#alphaN=dataSet[1,]
+#alphaNP= c(expression(D(alphaN[1],'t')), expression(D(alphaN[2],'t')),expression(0))
+#alphaNDP = c(expression(D(alphaNP[1],'t')), expression(D(alphaNP[2],'t')),expression(0))
+#alphaNPrimeVec = matrix(
+#+     c(),
+#+     nrow=3,
+#+     ncol=3
+#+ )
+
+# alphaNPrimeVec = matrix(
+#   +     c(alphaN,alphaNP,alphaNDP),
+#   +     nrow=3,
+#   +     ncol=3
+#   + )
+
 main <- function(dataSet){
     tRange <- data.frame(t=seq(0,2*pi,.1))
     nIterates=10
@@ -20,8 +37,8 @@ main <- function(dataSet){
 ##Output matrix of corresponding iterates of alphaN
 calcOrbit <- function(alphaN,nIterates,tRange){
     tRange<-seq_along(tRange)
-    orbitMatrix <- matrix(c(),nrow = nIterates, ncol=3,dimnames = list(, c("x(t)","y(t)","z=-1")))
-    outputOrbit <- matrix(c(),nrow = length(tRange), ncol=3,dimnames = list(, c("x(t)","y(t)","z=-1")))
+    orbitMatrix = matrix(c(),nrow = nIterates, ncol=3,dimnames = list(, c("x(t)","y(t)","z=-1")))
+    outputOrbit = matrix(c(),nrow = length(tRange), ncol=3,dimnames = list(, c("x(t)","y(t)","z=-1")))
     rbind(orbitMatrix, calcIterate(alphaN))
     orbitPlot <- matrix(c(),nrow=nI)
     #k=order of orbit
@@ -42,20 +59,25 @@ calcIterate <- function(alphaN){
   return(projectionKT(alphaN))
 }
 
+
 #Returns corresponding curvature(t) and torsion(t)
 #of the projected Parametric function passed to it
 projectionKT <- function(alphaN){
   #First deriveative of curve [k(t),T(t)]
   alphaNP= c(D(alphaN[1],'t'), D(alphaN[2],'t'),0)
   #Second derivative of curve [k(t),T(t)]
-  alphaNDP = c(D(alphaN[1],'t'), D(alphaN[2],'t'),0)
+  alphaNDP = c(D(D(alphaN[1],'t'),'t'),D(D(alphaN[2],'t'),'t'),0)
   
   #vector containing ktVec,ktVecP, ktVecDP
   alphaNPrimeVec = matrix(
-    c(alphaN, alphaNP,alphaNDP),
+    c(alphaN,alphaNP,alphaNDP),
     nrow=3,
     ncol=3
     )
+  
+  rbind(alphaNPrimeVec,alphaN)
+  rbind(alphaNPrimeVec,alphaNP)
+  rbind(alphaNPrimeVec,alphaNDP)
   
   dimnames(alphaPrimeVec)=list(
     c("alphaN","alphaNP","alphaNDP"))
@@ -74,7 +96,7 @@ curvatureI <- function(alphaNPrimeVec, t){
   gammaAlpha=gammaAlpha(osX)
   gammaAlphaDP=highOrderDeriv(gammaAlpha,'u',2)
   curvatureIAlpha=norm(c(gammaAlphaDP[1](2*pi),gammaAlphaDP[2](2*pi),gammaAlphaDP[3](2*pi)))
-  return(curvatureIalp)
+  return(curvatureIalpha)
 }
 
 #Calculate derivative of arbitrary order
@@ -114,12 +136,11 @@ gammaAlpha <-function(osX){
   
 }
 
-
 #parameter ktVecDeriv=[alpha(t),alpha'(t),alpha''(t)]
 #returns ||alpha'(t) x alpha''(t) ||/ ||(alpha'(t))^3||==K_alpha(t)
 curvaturePlaneCurve <- function(ktVecDeriv,t){
-  alphaP = c(ktVecDeriv[2][1](t),ktVecDeriv[2][2](t))
-  alphaDP= c(ktVecDeriv[3][1](t),ktVecDeriv[3][1](t))
+  alphaP = c(ktVecDeriv[2][1](t),ktVecDeriv[2][2](t),0)
+  alphaDP= c(ktVecDeriv[3][1](t),ktVecDeriv[3][1](t),0)
   
   kAlpha = norm(cross(alphaP,alphaDP),"2")/norm(alphaP)^3
   
