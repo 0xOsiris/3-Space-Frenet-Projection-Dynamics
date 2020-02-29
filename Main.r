@@ -24,6 +24,7 @@
 #   +     ncol=3
 #   + )
 
+
 main <- function(dataSet){
     tRange <- data.frame(t=seq(0,2*pi,.1))
     nIterates=10
@@ -67,53 +68,157 @@ projectionKT <- function(alphaN){
   alphaNP= c(D(alphaN[1],'t'), D(alphaN[2],'t'),0)
   #Second derivative of curve [k(t),T(t)]
   alphaNDP = c(D(D(alphaN[1],'t'),'t'),D(D(alphaN[2],'t'),'t'),0)
+  alphaNTP = c(D(D(D(alphaN[1],'t'),'t'),'t'),D(D(D(alphaN[2],'t'),'t'),'t'),0)
   
   #vector containing ktVec,ktVecP, ktVecDP
   alphaNPrimeVec = matrix(
-    c(alphaN,alphaNP,alphaNDP),
-    nrow=3,
-    ncol=3
+    c(alphaN,alphaNP,alphaNDP,alphaNTP),
+    nrow=4,
+    ncol=3,
+    byrow=FALSE
     )
+  print(alphaNPrimeVec)
+  dimnames(alphaNPrimeVec)=list(c("alphaN","alphaNP","alphaNDP","alphaNTP"),c("X","Y","Z"))
   
-  rbind(alphaNPrimeVec,alphaN)
-  rbind(alphaNPrimeVec,alphaNP)
-  rbind(alphaNPrimeVec,alphaNDP)
-  
-  dimnames(alphaPrimeVec)=list(
-    c("alphaN","alphaNP","alphaNDP"))
-  
-  return(c(curvatureI(alphaNPrimeVec,t), torsionI(alphaNPrimeVec,t)))
+  return(c(curvatureI(alphaNPrimeVec,t),torsionI(alphaNPrimeVec,t)))
   
 }
+
+torsionI <- function(alphaNPrimeVec,t){
+  
+  alpha =c(round(eval(alphaNPrimeVec[1,1]),10),round(eval(alphaNPrimeVec[1,2]),10),0)
+  alphaP = c(round(eval(alphaNPrimeVec[2,1]),10),round(eval(alphaNPrimeVec[2,2]),10),0)
+  alphaDP= c(round(eval(alphaNPrimeVec[3,1]),10),round(eval(alphaNPrimeVec[3,3]),10),0)
+  alphaTP= c(round(eval(alphaNPrimeVec[4,1]),10),round(eval(alphaNPrimeVec[4,2]),10),0)
+  
+  betaAlphMat = betaAlpha(alpha,alphaP,alphaDP,alphaTP,t)
+  
+  alphaPX<-alphaP[1]
+  alphaPY <- alphaP[2]
+  alphaDPX= alphaDP[1]
+  alphaDPY= alphaDP[2]
+  
+  
+  alphaTPX <-alphaTP[1]
+  alphaTPY<-alphaTP[2]
+  
+  X<-alpha[1]
+  Y<-alpha[2]
+  Z<-0
+  
+  betaAlphTP=c(eval(betaAlphMat[4,1]),eval(betaAlphMat[4,2]),0)
+  
+  betaAlphaTPV=c(eval(betaAlphTP[1])*alphaTP[1],eval(betaAlphTP[2])*alphaTP[2],0)
+  
+  
+  torsionI = dot(tcrossprod(alphaP,alphaDP),betaAlphaTPV)/norm(tcrossprod(alphaP,alphaDP))^2
+  
+  return(torsionI)
+  
+}
+
+
+##Beta mapping represents the stereographic projection of alpha onto the 
+##Unit sphere
+betaAlpha <- function(alpha,alphaP,alphaDP,alphaNTP,t){
+
+  betaAlpha = c(expression((4*X)/X^2+Y^2+4),expression((4*Y)/X^2+Y^2+4),expression((X^2+Y^2-4)/(X^2+Y^2+4)))
+  
+  betaAlphaP = c(DD(expression((4*X)/X^2+Y^2+4),'X',1),
+                 DD(expression((4*Y)/X^2+Y^2+4),'Y',1),
+                 DD(expression((X^2+Y^2-4)/(X^2+Y^2+4)),'Z',1))
+  
+  betaAlphaDP = c(DD(expression((4*X)/X^2+Y^2+4),'X',2),
+                  DD(expression((4*Y)/X^2+Y^2+4),'Y',2),
+                  DD(expression(X^2+Y^2-4/(X^2+Y^2+4)),'Z',2))
+  
+  
+  betaAlphaTP = c(DD(expression((4*X)/X^2+Y^2+4),'X',3),
+                  DD(expression((4*Y)/X^2+Y^2+4),'Y',3),
+                  DD(expression(X^2+Y^2-4/(X^2+Y^2+4)),'Z',3))
+  
+  
+  betaMatrix=matrix(
+    c(betaAlpha,betaAlphaP,betaAlphaDP,betaAlphaTP),
+    nrow=4,
+    ncol=3,
+    byrow=FALSE
+    
+  )
+  
+  print(betaMatrix)
+  
+  return(betaMatrix)
+  
+  
+}
+
+##DD for calculation of high order derivatives
+DD <- function(expr, name, order=1) {
+  if(order < 1) stop("'order' must be >= 1")
+  if(order == 1) 
+    return(D(expr, name))
+  else DD(D(expr, name), name, order - 1)}
+
+
 
 
 #parameter ktVecDeriv=[alpha(t),alpha'(t),alpha''(t)]
 #Returns curvature of projected image of alpha on the unit sphere
 #at point t
 curvatureI <- function(alphaNPrimeVec, t){
-  kAlpha=curvaturePlaneCurve(alphaNPrimeVec,t)
-  osculatingCircle = osculatingAlpha(alphaPrimeVec,kAlpha,t)
-  gammaAlpha=gammaAlpha(osX)
-  gammaAlphaDP=highOrderDeriv(gammaAlpha,'u',2)
-  curvatureIAlpha=norm(c(gammaAlphaDP[1](2*pi),gammaAlphaDP[2](2*pi),gammaAlphaDP[3](2*pi)))
-  return(curvatureIalpha)
+  #print(alphaNPrimeVec)
+  u=2*pi
+  alpha =c(round(eval(alphaNPrimeVec[1,1]),10),round(eval(alphaNPrimeVec[1,2]),10),0)
+  alphaP = c(round(eval(alphaNPrimeVec[2,1]),10),round(eval(alphaNPrimeVec[2,2]),10),0)
+  alphaDP= c(round(eval(alphaNPrimeVec[3,1]),10),round(eval(alphaNPrimeVec[3,2]),10),0)
+  
+  kAlpha=curvaturePlaneCurve(alphaP,alphaDP,t)
+  print(kAlpha)
+  gammaAlpha = osculatingIAlpha(alpha,alphaP,alphaDP,kAlpha)
+  print(gammaAlpha)
+  X<-(alpha[1]+(alphaDP[1]/kAlpha)+(1/kAlpha))
+  Y<-(alpha[2]+(alphaDP[2]/kAlpha)+(1/kAlpha))
+  
+  gammaAlphaDP=c(eval(gammaAlpha[3,1]),eval(gammaAlpha[3,2]),eval(gammaAlpha[3,3]))
+  gammaAlphaDPNorm=c(eval(gammaAlphaDP[1]),eval(gammaAlphaDP[2]),eval(gammaAlphaDP[3]))
+  
+  
+  
+  
+  curvatureIAlpha=norm(as.matrix(gammaAlphaDPNorm))
+  
+  #print(curvatureIAlpha)
+  #print(kAlpha)
+  return(curvatureIAlpha)
 }
 
-#Calculate derivative of arbitrary order
-highOrderDeriv <-function(vecExpression, name, order){
-  return(c(DD(D(vecExpression[1],name),name,order -1),DD(D(vecExpression[2],name),name,order -1),DD(D(vecExpression[3],name),name,order -1)))
-}
 
 ##Parametric function defining osculating circle of a curve alpha(t)
 ##at some t. ==> radius of osculatingAlpha= (1/kAlpha)
 ##further we know [x_0,y_0]=[x(t),y(t)]+[T'_alpha(t)/kAlpha)]
 ##0<=u<=2pi with will be the parameter of the osculating circle
 ##uRange=data.frame(u=seq(0,2*pi,.1))
-osculatingAlpha <- function(alphaNPrimeVec,kAlpha,t){
-    oscX=c(expression(alphaNPrimeVec[1,1](t)+(alphaNPrimeVec[3,1](t)/kAlpha+(1/kAlpha*(cos(u))))),
-           expression(alphaNPrimeVec[1,2](t)+(alphaNPrimeVec[3,2](t)/kAlpha+(1/kAlpha*(sin(u))))),
-           expression(-1))
-    return(oscX)
+osculatingIAlpha <- function(alpha,alphaP,alphaDP,kAlpha){
+    
+    gammaAlpha=c(expression(4*(X*cos(u))/((X*cos(u))^2+(Y*sin(u))^2+4)),
+                            expression(4*(Y*sin(u))/((X*cos(u))^2+(Y*sin(u))^2+4)),
+                            expression(1-(8/((X*cos(u))^2+(Y*sin(u))^2+4))))
+                 
+    gammaAlphaP=c(D(gammaAlpha[1],'u'), D(gammaAlpha[2],'u'),D(gammaAlpha[3],'u'))
+    gammaAlphaDP=c(D(D(gammaAlpha[1],'u'),'u'), D(D(gammaAlpha[2],'u'),'u'),D(D(gammaAlpha[3],'u'),'u'))
+    
+    #vector containing ktVec,ktVecP, ktVecDP
+    gammaMatrix=matrix(
+      c(gammaAlpha,gammaAlphaP,gammaAlphaDP),
+      nrow=3,
+      ncol=3,
+      byrow=FALSE
+    )
+    
+    
+    return(gammaMatrix)
+    
 }
 
 #(x,y) represent values of osculating circle of some curve alphaN(t) at
@@ -128,22 +233,22 @@ osculatingAlpha <- function(alphaNPrimeVec,kAlpha,t){
 ##This mapping creates a surface of a cone. The projection mapping
 ##gammAlpha gives us the intersection of the cone and the unit sphere.
 ##this intersection happens at v=4/(x)^2+(y)^2+4
-gammaAlpha <-function(osX){
-  
-    gammaAlphaVec<-c((4*(osX[1])/(osX[1])^2+(osX[1])^2+4),4*(osX[2])/(osX[1])^2+(osX[2])^2+4,1-(8/(osX[1])^2+(osX[2])^2+4))
-    
-    return(gammAlphaVec)
-  
-}
+
 
 #parameter ktVecDeriv=[alpha(t),alpha'(t),alpha''(t)]
 #returns ||alpha'(t) x alpha''(t) ||/ ||(alpha'(t))^3||==K_alpha(t)
-curvaturePlaneCurve <- function(ktVecDeriv,t){
-  alphaP = c(ktVecDeriv[2][1](t),ktVecDeriv[2][2](t),0)
-  alphaDP= c(ktVecDeriv[3][1](t),ktVecDeriv[3][1](t),0)
+curvaturePlaneCurve <- function(alphaP,alphaDP,t){
   
-  kAlpha = norm(cross(alphaP,alphaDP),"2")/norm(alphaP)^3
+  #print(alphaDP)  
+  #print(tcrossprod(alphaP,alphaDP))
+  #print(norm(tcrossprod(alphaP,alphaDP)))
+  kAlpha = norm(tcrossprod(alphaP,alphaDP))/norm(as.matrix(alphaP))^3
   
   return(kAlpha)
+  
+}
+
+dot <-function(x,y){
+  return(sum(x*y))
 }
 
