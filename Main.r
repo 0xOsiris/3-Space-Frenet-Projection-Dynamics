@@ -199,6 +199,19 @@ curvatureI <- function(alphaNPrimeVec, t){
 ##further we know [x_0,y_0]=[x(t),y(t)]+[T'_alpha(t)/kAlpha)]
 ##0<=u<=2pi with will be the parameter of the osculating circle
 ##uRange=data.frame(u=seq(0,2*pi,.1))
+
+#(x,y) represent values of osculating circle of some curve alphaN(t) at
+#some value t. gammaAlpha(t) gives the corresponding (x,y,z)
+#values of the osculating circle of the image of alphaN(t) or alphaNI(t)
+#at the same value t. Note x,y are depent on alphaN(t)
+#that is
+# if alphaN(t) = x(t),y(t)==> x=x(t)+((T'alpha(t)_x)/k(t))+(1/k(t))cos(u))
+## essentially x and y are functions of 0<=u<=2pi at each t on the curve ##alphaN
+
+##For simplicity sake know that ##(x,y)=gamma(u,v=1)=[(1)*(x_0+rcos(u)),(1)*(y_0+rsin(u)),1-2*(1)]
+##This mapping creates a surface of a cone. The projection mapping
+##gammAlpha gives us the intersection of the cone and the unit sphere.
+##this intersection happens at v=4/(x)^2+(y)^2+4
 osculatingIAlpha <- function(alpha,alphaP,alphaDP,kAlpha){
     
     gammaAlpha=c(expression(4*(X*cos(u))/((X*cos(u))^2+(Y*sin(u))^2+4)),
@@ -220,20 +233,6 @@ osculatingIAlpha <- function(alpha,alphaP,alphaDP,kAlpha){
     return(gammaMatrix)
     
 }
-
-#(x,y) represent values of osculating circle of some curve alphaN(t) at
-#some value t. gammaAlpha(t) gives the corresponding (x,y,z)
-#values of the osculating circle of the image of alphaN(t) or alphaNI(t)
-#at the same value t. Note x,y are depent on alphaN(t)
-#that is
-# if alphaN(t) = x(t),y(t)==> x=x(t)+((T'alpha(t)_x)/k(t))+(1/k(t))cos(u))
-## essentially x and y are functions of 0<=u<=2pi at each t on the curve ##alphaN
-
-##For simplicity sake know that ##(x,y)=gamma(u,v=1)=[(1)*(x_0+rcos(u)),(1)*(y_0+rsin(u)),1-2*(1)]
-##This mapping creates a surface of a cone. The projection mapping
-##gammAlpha gives us the intersection of the cone and the unit sphere.
-##this intersection happens at v=4/(x)^2+(y)^2+4
-
 
 #parameter ktVecDeriv=[alpha(t),alpha'(t),alpha''(t)]
 #returns ||alpha'(t) x alpha''(t) ||/ ||(alpha'(t))^3||==K_alpha(t)
