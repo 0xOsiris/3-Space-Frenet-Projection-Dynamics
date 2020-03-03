@@ -1,13 +1,21 @@
 #Author: Leyton Taylor
+#February 2020
+
+#######################################
+##Still very much a work in progress###
+#######################################
+
+##General description of system behavior:
 
 ##alphaN(t) = planar curve s.t. alphaN(t)=[x(t),y(t),-1]
 ##Notation: calcIterate(alphaN(t))=[curvatureIAlphaN(t), torsionIAlphaN(t)] where IAlpha(t) = Image of alpha(t) when stereographically projected to
 ##the unit sphere
-##betaMap(alpha(t))=projection map of alpha to unit sphere i.e. alphaI(t)
-##gammaMap(alpha(t))=osculating circle of alphaI(t)
+##betaAlpha(alpha(t))=projection map of alpha to unit sphere i.e. alphaI(t)
+##gammaAlpha(alpha(t))=osculating circle of alphaI(t)
 
+
+##Test data
 ##dataSet=matrix(alphaN(t)=(x(t),y(t),z=-1), nrow=N, ncol=3)
-
 #dataSet= matrix(c(expression(.2*cos(t)),expression(.5*sin(t)),expression(-1)), ncol=3)
 #alphaN=dataSet[1,]
 #alphaNP= c(expression(D(alphaN[1],'t')), expression(D(alphaN[2],'t')),expression(0))
@@ -24,7 +32,9 @@
 #   +     ncol=3
 #   + )
 
-
+#Ideally will take in a dataset of a family of curves 
+#Each row of the dataSet matrix will represent a parametric equation of a planar curve
+#the 3 collumns [x(t),y(t),z(t)=-1]
 main <- function(dataSet){
     tRange <- data.frame(t=seq(0,2*pi,.1))
     nIterates=10
@@ -35,7 +45,10 @@ main <- function(dataSet){
     }
 }
 
-##Output matrix of corresponding iterates of alphaN
+##Not working, eventually should take in a curve alphaN from the dataSet matrix and 
+##run the system over nIterates. The paremetric equation representing the planar curve of each successive iterate
+##will be stored in a matrix outputOrbit, the corresponding points over a range of t for each successive iterate
+##will be stored in orbitMatrix for plotting purposes.
 calcOrbit <- function(alphaN,nIterates,tRange){
     tRange<-seq_along(tRange)
     orbitMatrix = matrix(c(),nrow = nIterates, ncol=3,dimnames = list(, c("x(t)","y(t)","z=-1")))
@@ -54,8 +67,7 @@ calcOrbit <- function(alphaN,nIterates,tRange){
     }
 }
 
-#parameter t and returns a parametric function that corresponds
-#to the projection of Curvature and Torsion for each t
+#parameter alphaN: returns projectionKT
 calcIterate <- function(alphaN){
   return(projectionKT(alphaN))
 }
@@ -68,9 +80,10 @@ projectionKT <- function(alphaN){
   alphaNP= c(D(alphaN[1],'t'), D(alphaN[2],'t'),0)
   #Second derivative of curve [k(t),T(t)]
   alphaNDP = c(D(D(alphaN[1],'t'),'t'),D(D(alphaN[2],'t'),'t'),0)
+  #Third derivative
   alphaNTP = c(D(D(D(alphaN[1],'t'),'t'),'t'),D(D(D(alphaN[2],'t'),'t'),'t'),0)
   
-  #vector containing ktVec,ktVecP, ktVecDP
+  #matrix containing alphaN,alphaNP,alphaNDP,alphaNTP
   alphaNPrimeVec = matrix(
     c(alphaN,alphaNP,alphaNDP,alphaNTP),
     nrow=4,
@@ -79,11 +92,13 @@ projectionKT <- function(alphaN){
     )
   print(alphaNPrimeVec)
   dimnames(alphaNPrimeVec)=list(c("alphaN","alphaNP","alphaNDP","alphaNTP"),c("X","Y","Z"))
-  
+  #return vector of two expressions corresponding to the projected calculation of curvature and torsion
+  #will be passed back into the system
   return(c(curvatureI(alphaNPrimeVec,t),torsionI(alphaNPrimeVec,t)))
   
 }
 
+##Projected torsion calculation: in progress
 torsionI <- function(alphaNPrimeVec,t){
   
   alpha =c(round(eval(alphaNPrimeVec[1,1]),10),round(eval(alphaNPrimeVec[1,2]),10),0)
@@ -194,18 +209,15 @@ curvatureI <- function(alphaNPrimeVec, t){
 }
 
 
-##Parametric function defining osculating circle of a curve alpha(t)
-##at some t. ==> radius of osculatingAlpha= (1/kAlpha)
-##further we know [x_0,y_0]=[x(t),y(t)]+[T'_alpha(t)/kAlpha)]
-##0<=u<=2pi with will be the parameter of the osculating circle
-##uRange=data.frame(u=seq(0,2*pi,.1))
+
 
 #(x,y) represent values of osculating circle of some curve alphaN(t) at
-#some value t. gammaAlpha(t) gives the corresponding (x,y,z)
+#some value t. gammaAlpha(x,y) gives the corresponding (x,y,z)
 #values of the osculating circle of the image of alphaN(t) or alphaNI(t)
 #at the same value t. Note x,y are depent on alphaN(t)
 #that is
-# if alphaN(t) = x(t),y(t)==> x=x(t)+((T'alpha(t)_x)/k(t))+(1/k(t))cos(u))
+# if alphaN(t) = x(t),y(t)==> x=x(t)+((T'alpha(t)_x)/k(t))+(1/k(t))cos(u)) simalarly for y
+#described in depth in research paper
 ## essentially x and y are functions of 0<=u<=2pi at each t on the curve ##alphaN
 
 ##For simplicity sake know that ##(x,y)=gamma(u,v=1)=[(1)*(x_0+rcos(u)),(1)*(y_0+rsin(u)),1-2*(1)]
@@ -234,8 +246,7 @@ osculatingIAlpha <- function(alpha,alphaP,alphaDP,kAlpha){
     
 }
 
-#parameter ktVecDeriv=[alpha(t),alpha'(t),alpha''(t)]
-#returns ||alpha'(t) x alpha''(t) ||/ ||(alpha'(t))^3||==K_alpha(t)
+#parameter alphaP,alphaDP,t returns curvature of planar curve
 curvaturePlaneCurve <- function(alphaP,alphaDP,t){
   
   #print(alphaDP)  
@@ -247,6 +258,7 @@ curvaturePlaneCurve <- function(alphaP,alphaDP,t){
   
 }
 
+#dotproduct of two matrices or functions
 dot <-function(x,y){
   return(sum(x*y))
 }
