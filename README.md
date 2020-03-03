@@ -10,7 +10,7 @@ of the orbit calculates the new k(t),t(t) of the parametric curve passed.
 The goal is to analyze the behavior of this system for families of smooth planar curves i.e. 
 
 If f: R^2->R^2 is defined as f(N(t)) = [k(t),t(t)] where k(t) and t(t) represent the curvature and torsion of the image of N(t) on the unit
-sphere. 
+sphere. Then f^n(N(t))=[k^n(t),t^n(t)] would be the nth iterate of f which would be the result of stereographically projecting [k(t),t(t)] and recalculating the projected curvature and torsion over n iterates.
 
 The behavior we are hoping to analyze is as follows:
 
@@ -20,7 +20,7 @@ the curvature and torsion of the image of N(t) on the unit sphere for all t.
 2) Does convergence happen for some curves, when passed to f over an orbit of high order. Further what is the curve that the orbit of 
 f^n(N(t)) is converging to.
 
-3.) Categorizing behavior of families of curves in the dynamical system.
+3.) Categorizing behavior of families of curves in the dynamical system based on the results.
 
 
 
