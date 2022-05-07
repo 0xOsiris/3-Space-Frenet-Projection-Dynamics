@@ -1,3 +1,15 @@
+```
+                                                          Y88b   d88P          
+                                                           Y88b d88P           
+                                                            Y88o88P            
+                                                             Y888P     .d88b.  
+                                                              888     d88""88b 
+                                                              888     888  888 
+                                                              888     Y88..88P 
+                                                              888      "Y88P"  
+                   
+```
+
 In Progress: Dynamical System created from mapping of curvature and torsion of image of parametric planar curve when 
 stereographically projected to the unit sphere. 
 
