@@ -23,7 +23,7 @@ planar curve at some time stamp $t$. $\kappa(t)$ and $\tau(t)$ create a new smoo
 
 The goal is to analyze the behavior of this system for families of smooth planar curves i.e. 
 
-If $f: \mathbb{R}^2->\mathbb{R}^2$ is defined as $f^1(\phi(t)) = \phi^1(t)=[\kappa^1(t),\tau^1(t)]$ where $\kappa(t)$ and $\tau(t)$ represent the curvature and torsion of the image of $\phi(t)$ on the unit
+Let $f: \mathbb{R}^2->\mathbb{R}^2$ is defined as $f^1(\phi(t)) = \phi^1(t)=[\kappa^1(t),\tau^1(t)]$ where $\kappa(t)$ and $\tau(t)$ represent the curvature and torsion of the image of $\phi(t)$ on the unit
 sphere. Then $f^n(\phi(t)) = \phi^n(t)=[\kappa^n(t),\tau^n(t)]$ would be the $n_{th}$ iterate of $f$ which would be the result of stereographically projecting $[\kappa(t),\tau(t)]$ and recalculating the projected curvature and torsion over $n$ iterates.
 
 The behavior we are hoping to analyze is as follows:
