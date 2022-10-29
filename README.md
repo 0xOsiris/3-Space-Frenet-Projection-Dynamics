@@ -24,7 +24,7 @@ Stereographic Projection is a smooth bijective mapping from a plane to a sphere.
 This repository builds the core foundational logic to build a dynamical system from mapping of curvature and torsion of image of parametric planar curve when stereographically projected to the unit sphere. </br>
 
 Let $\alpha(t)$ be a an arbitrary parametric curve residing the plane $z=-1$. This will be the seed to our dynamical system. Suppose we have some mapping $\beta: \mathbb{R}^2->\mathbb{R}^3$ such that $\beta(\alpha(t))$ represents the [stereographic projection](https://en.wikipedia.org/wiki/Stereographic_projection) of $\alpha(t)$ onto the unit sphere. 
-Such that 
+We define $\beta$ as
 ```math
 \begin{equation}
     \beta \cdot \alpha(t) = \beta \cdot \alpha \begin{pmatrix}
@@ -38,8 +38,8 @@ Such that
     
 \end{equation}
 ```
-Notice first that this projection $\beta(\alpha(t))$ now has some [curvature](https://mathworld.wolfram.com/Curvature.html) $\kappa(t)$ & some [torsion](https://mathworld.wolfram.com/Torsion.html) $\tau(t)$. But it doesn't seem obvious how to derive $\kappa(t)$ & $\tau(t)$..🧙‍♂️
 
+Notice first that this projection $\beta(\alpha(t))$ now has some [curvature](https://mathworld.wolfram.com/Curvature.html) $\kappa(t)$ & some [torsion](https://mathworld.wolfram.com/Torsion.html) $\tau(t)$ which it did not have prior to being projected. 
 
 ### 🗞 Mapping the Curvature and Torsion 🗞
 Notice that from the curvature of the planar curve $\alpha(t)$ at any point $t_0$ along $\alpha$ we know that $\alpha(t_0)$ has some associated curvature, and therefore an osculating circle lying on the plane and intersecting $\alpha$ at a single point $\alpha(t_0)$. If you are not familiar, this circle represents the instantanious "curvature" at $t_0$. Imagine you are driving a car along the curve and following the twists and turns until at $t_0$ you hold the steering wheel at exactly the same angle and keep driving. What would happen is you would trace out a circle! And the inverse of the radius of that circle we call curvature🙌. We will call that circle $c_{\alpha}(t)$. We will use $c_{\alpha}(t)$ as the base of an oblique cone, and the tip of the cone will be the north pole of the unit sphere. We will show that the intersection of this cone with the unit sphere is in fact the osculating circle of $\beta(\alpha(t))$. </br>
