@@ -1,4 +1,22 @@
-## Brief Overview 
+```solidity
+     \\XXXXXX//  Dynamical Systems
+      XXXXXXXX Built From Curvature  
+     //XXXXXX\\  and Torsion of      OOOOOOOOOOOOOOOOOOOO
+    ////XXXX\\\\  Planar Curves      OOOOOOOOOOOOOOOOOOOO
+   //////XX\\\\\\     |||||||||||||||OOOOOOOOOOOOOOOVVVVVVVVVVVVV
+  ////////\\\\\\\\    |!!!|||||||||||OOOOOOOOOOOOOOOOVVVVVVVVVVV'
+ ////////  \\\\\\\\ .d88888b|||||||||OOOOOOOOOOOOOOOOOVVVVVVVVV'
+////////    \\\\\\\d888888888b||||||||||||            'VVVVVVV'
+///////      \\\\\\88888888888||||||||||||             'VVVVV'
+//////        \\\\\Y888888888Y||||||||||||              'VVV'
+/////          \\\\\\Y88888Y|||||||||||||| .             'V'
+////            \\\\\\|iii|||||||||||||||!:::.            '
+///              \\\\\\||||||||||||||||!:::::::.
+//                \\\\\\\\           .:::::::::::.
+/                  \\\\\\\\        .:::::::::::::::.
+                    \\\\\\\\     .:::::::::::::::::::.
+                     \\\\\\\\
+```
 Stereographic Projection is a smooth bijective mapping from a plane to a sphere. The mapping is a conformal projection preserving angles and circles. That is the image of a circle on the sphere is a circle in the plane and the angle between two lines on the sphere is the same as the angle between their images in the plane. A smooth curve lying on the plane can be projected to the sphere. Any smooth planar curve has zero torsion and some curvature. As a result of the preservative properties of the projection mapping we are able to make a bijective mapping of the curvature and torsion of a curve to the curvature and torsion of its projected image. Such mapping allows for a dynamical system to be built. Each iterate of the system takes in a smooth parametric planar curve and outputs a smooth parametric curve. The parametric curve created from the output of each iterate is defined by the mapping of the projected curvature and torsion of the input curve. </br>
 
 ## Mathematical Formalization
@@ -23,7 +41,7 @@ Such that
 Notice first that this projection $\beta(\alpha(t))$ now has some [curvature](https://mathworld.wolfram.com/Curvature.html) $\kappa(t)$ & some [torsion](https://mathworld.wolfram.com/Torsion.html) $\tau(t)$. But it doesn't seem obvious how to derive $\kappa(t)$ & $\tau(t)$..🧙‍♂️
 
 
-## Mathematical Derivation of the Curvature and Torsion of Stereographic Projection
+### Mathematical Derivation of the Curvature and Torsion of Stereographic Projection
 Notice that from the curvature of the planar curve $\alpha(t)$ at any point $t_0$ along $\alpha$ we know that $\alpha(t_0)$ has some associated curvature, and therefore an osculating circle lying on the plane and intersecting $\alpha$ at a single point $\alpha(t_0)$. If you are not familiar, this circle represents the instantanious "curvature" at $t_0$. Imagine you are driving a car along the curve and following the twists and turns until at $t_0$ you hold the steering wheel at exactly the same angle and keep driving. What would happen is you would trace out a circle! And the inverse of the radius of that circle we call curvature🙌. We will call that circle $c_{\alpha}(t)$. We will use $c_{\alpha}(t)$ as the base of an oblique cone, and the tip of the cone will be the north pole of the unit sphere. We will show that the intersection of this cone with the unit sphere is in fact the osculating circle of $\beta(\alpha(t))$. </br>
 
 #### 🍦 The Cone 🍦
