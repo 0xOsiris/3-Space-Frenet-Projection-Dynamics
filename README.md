@@ -82,8 +82,10 @@ For more technical details as to how the intersection is derived read the paper.
 
 which yields the equation of the osculating circle of $\beta \cdot \alpha(t)$ at $t=t_0$. From this we can smoothly derive the projected curvature and torsion in 3 dimensional space of the projection. The details of this derivation are clearly defined in the paper.
 
-Here is a graphic of all of the components:
-![Screenshot](Plot4.png)
+Here is a graphic of all of the components: </br>
+<p align="center">
+  <img src="Plot4.png" width="350" title="hover text">
+</p>
 We can notice something very interesting the curvature $\kappa(t)$ and torsion $\tau(t)$ actually trace a smooth planar curve in the same parametric form as our original seed $\alpha(t)$, Let $\phi(t)=[\kappa(t),\tau(t), -1]$ be such curve. This represent the output of the first iterate, and the input to the second iterate of our dynamical system. The dynamical system will continue this methodology by iteratively projecting the output of each iterate and reprojecting downward the curvature and torsion in the form $[\kappa(t),\tau(t), -1]$. This is the iterative architecture of the system built in this repository. 
 
 ## Research Goals
