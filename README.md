@@ -10,19 +10,19 @@ Let $f: \mathbb{R}^2->\mathbb{R}^2$ is defined as $f^1(\phi(t)) = \phi^1(t)=[\ka
 
 ## The behavior I am hoping to Analyze
 
-### 1
-Try to find fixed points in the system --> if $\phi(t) =[x(t),y(t), -1]$ then if $f(\phi(t))=\phi^1(t)$ we have $\phi^1(t)=[\kappa(f(\phi(t)),\kappa(f(\phi(t))]=\phi(t)$. The above result would be the case when $\phi(t)$ represents a planar parametric circle, but is there other cases where this could be true? To be honest, I am not sure.. but I want to know 🧙‍♂️🧙‍♂️.
-### 2
-Does convergence happen for some curves over an orbit of high order. Further what is the curve that the orbit of 
-$f^n(\phi(t))$ is converging to. Is it always the same cure? Is it a circle? And what topological inferences could we learn from such a result. 
+**Try to find fixed points in the system --> if $\phi(t) =[x(t),y(t), -1]$ then if $f(\phi(t))=\phi^1(t)$ we have $\phi^1(t)=[\kappa(f(\phi(t)),\kappa(f(\phi(t))]=\phi(t)$. The above result would be the case when $\phi(t)$ represents a planar parametric circle, but is there other cases where this could be true? To be honest, I am not sure.. but I want to know 🧙‍♂️🧙‍♂️.**
+</br>
 
-### 3
-Does chaos ever arise in such a system? My intuition tells me no, but to be completely honest this is just a hunch. 
+**Does convergence happen for some curves over an orbit of high order. Further what is the curve that the orbit of 
+$f^n(\phi(t))$ is converging to. Is it always the same cure? Is it a circle? And what topological inferences could we learn from such a result. **
+</br>
 
-### 4
-Categorizing behavior of families of curves in the dynamical system based on the results.
+**Does chaos ever arise in such a system? My intuition tells me no, but to be completely honest this is just a hunch.**
+</br>
 
+**Categorizing behavior of families of curves in the dynamical system based on the results.**
 
+For a comprehensive mathematical formulation of the equations reference 
 
 
 
